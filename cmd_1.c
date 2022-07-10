@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongjch <seongjch@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:29:35 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/10 15:57:31 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/10 21:55:27 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,22 @@ void	reverse_rotate(t_stack **top)
 	list -> next = 0;
 }
 
+int	find_min(t_stack **top)
+{
+	int		min;
+	t_stack *list;
+
+	list = *top;
+	min = 2147483647;
+	while (list != 0)
+	{
+		if (min > list->data)
+			min = list->data;
+		list = list->next;
+	}
+	return (min);
+}
+
 void	sorting(t_stack **top)
 {
 	t_stack *list;
@@ -83,16 +99,8 @@ void	sorting(t_stack **top)
 	sorted_node = *top;
 	while (sorted_node != 0)
 	{
-		min = 2147483647;
 		list = sorted_node;
-		
-		while (list != 0)
-		{
-			if (min > list->data)
-				min = list->data;
-			list = list->next;
-		}
-		list = sorted_node;
+		min = find_min(&list);
 		while (list != 0)
 		{
 			if (min == list->data)
@@ -107,10 +115,55 @@ void	sorting(t_stack **top)
 	}
 }
 
+void copy(t_stack **dest, t_stack **src)
+{
+	t_stack *list;
+	t_stack *src_list;
+
+	list = *dest;
+	src_list = *src;
+	while (src_list->next != 0)
+	{
+		list->next = malloc(sizeof(struct s_stack));
+		list->data = src_list->data;
+		list = list->next;
+		src_list = src_list->next;
+	}
+	list->data = src_list->data;
+	list->next = 0;
+}
+
+int find_middle(t_stack	**top)
+{
+	t_stack *list;
+	int		len;
+	int		cnt;
+
+	len = 0;
+	cnt = 0;
+	list = *top;
+	while (list != 0)
+	{
+		len++;
+		list = list->next;
+	}
+	len = len / 2;
+	while (list != 0)
+	{
+		cnt++;
+		if (cnt == len)
+			return (list->data);
+		list = list->next;
+	}
+	return (0);
+}
+
 int main()
 {
 	t_stack	*top;
 	t_stack	*top2;
+	t_stack *sorted;
+
 	top = 0;
 	append(&top, 3);
 	append(&top, 2);
@@ -119,10 +172,12 @@ int main()
 	append(&top2, 6);
 	append(&top2, 5);
 	append(&top2, 4);
-	sorting(&top);
-	while (top != 0)
+	sorted = malloc(sizeof(struct s_stack));
+	copy(&sorted, &top);
+	sorting(&sorted);
+	while (sorted != 0)
 	{
-		printf("%d\n", top->data);
-		top = top->next;
+		printf("%d\n", sorted->data);
+		sorted = sorted->next;
 	}
 }
