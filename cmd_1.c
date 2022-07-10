@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:29:35 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/10 21:55:27 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/11 02:16:59 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ void	reverse_rotate(t_stack **top)
 	list -> next = 0;
 }
 
-int	find_min(t_stack **top)
+int	find_min(t_stack *top)
 {
 	int		min;
 	t_stack *list;
 
-	list = *top;
+	list = top;
 	min = 2147483647;
 	while (list != 0)
 	{
@@ -90,17 +90,17 @@ int	find_min(t_stack **top)
 	return (min);
 }
 
-void	sorting(t_stack **top)
+void	sorting(t_stack *top)
 {
 	t_stack *list;
 	t_stack *sorted_node;
 	int		min;
 
-	sorted_node = *top;
+	sorted_node = top;
 	while (sorted_node != 0)
 	{
 		list = sorted_node;
-		min = find_min(&list);
+		min = find_min(list);
 		while (list != 0)
 		{
 			if (min == list->data)
@@ -133,51 +133,157 @@ void copy(t_stack **dest, t_stack **src)
 	list->next = 0;
 }
 
-int find_middle(t_stack	**top)
+int	len_stack(t_stack	*top)
 {
 	t_stack *list;
 	int		len;
-	int		cnt;
 
 	len = 0;
-	cnt = 0;
-	list = *top;
+	list = top;
 	while (list != 0)
 	{
 		len++;
 		list = list->next;
 	}
-	len = len / 2;
-	while (list != 0)
+	return (len);
+}
+
+int find_mid(t_stack	*top)
+{
+	t_stack *sorted;
+	int		len;
+	int		cnt;
+
+	sorted = malloc(sizeof(struct s_stack));
+	if (!sorted)
+		exit(0);
+	copy(&sorted, &top);
+	sorting(sorted);
+	cnt = 0;
+	len = len_stack(sorted) / 2 + 1;
+	while (sorted != 0)
 	{
 		cnt++;
 		if (cnt == len)
-			return (list->data);
-		list = list->next;
+		{
+			cnt = sorted->data;
+			free(sorted);
+			return (cnt);
+		}
+		sorted = sorted->next;
 	}
 	return (0);
+}
+
+void quick(t_stack **sorting_top, t_stack **box_top, int mid, int flag)
+{
+	t_stack *logic_box;
+
+	logic_box = 0;
+	while (!is_min(*sorting_top, mid))
+	{
+		if (flag == 0)
+		{
+			if ((*sorting_top)->data >= mid)
+				rotate(sorting_top);
+			else
+				push(&logic_box, sorting_top);
+		}
+		if (flag == 1)
+		{
+			if ((*sorting_top)->data <= mid)
+				rotate(sorting_top);
+			else
+				push(&logic_box, sorting_top);
+		}
+	}
+	if (!is_sort(*sorting_top))
+		quick(sorting_top, &logic_box, find_mid(*sorting_top), 0);
+	if (!is_revers_sort(logic_box))
+		quick(&logic_box, sorting_top, find_mid(logic_box), 1);
+	while (logic_box != 0)
+		push(sorting_top, &logic_box);
+}
+
+int	is_sort(t_stack *top)
+{
+	t_stack *list;
+	int		val;
+
+	val = -2147483648;
+	list = top;
+	while (list != 0)
+	{
+		if (list->data > val)
+			val = list->data;
+		else
+			return (0);
+		list = list->next;
+	}
+	return (1);
+}
+
+int	is_revers_sort(t_stack *top)
+{
+	t_stack *list;
+	int		val;
+
+	val = 2147483647;
+	list = top;
+	while (list != 0)
+	{
+		if (list->data < val)
+			val = list->data;
+		else
+			return (0);
+		list = list->next;
+	}
+	return (1);
+}
+
+int	is_min(t_stack *top, int min)
+{
+	t_stack *list;
+
+	list = top;
+	while (list != 0)
+	{
+		if (list->data < min)
+			return (0);
+		list = list->next;
+	}
+	return (1);
 }
 
 int main()
 {
 	t_stack	*top;
 	t_stack	*top2;
-	t_stack *sorted;
+	int		mid;
 
 	top = 0;
-	append(&top, 3);
+	append(&top, 6);
+	append(&top, 7);
 	append(&top, 2);
-	append(&top, -4);
+	append(&top, 5);
 	append(&top, 1);
-	append(&top2, 6);
-	append(&top2, 5);
-	append(&top2, 4);
-	sorted = malloc(sizeof(struct s_stack));
-	copy(&sorted, &top);
-	sorting(&sorted);
-	while (sorted != 0)
+	append(&top, 8);
+	append(&top, 3);
+	append(&top, 4);
+	top2 = 0;
+	mid = find_mid(top);
+	quick(&top,&top2, mid, 0);
+	while (top != 0)
 	{
-		printf("%d\n", sorted->data);
-		sorted = sorted->next;
+		printf("%d\n", top->data);
+		top = top->next;
 	}
+	printf("----------------\n");
+	/*
+	while (top2 != 0)
+	{
+		printf("%d\n", top2->data);
+		top2 = top2->next;
+	}
+	*/
 }
