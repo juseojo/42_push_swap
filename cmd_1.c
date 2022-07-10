@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seongjch <seongjch@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:29:35 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/10 08:32:27 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/10 15:57:31 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,73 +74,37 @@ void	reverse_rotate(t_stack **top)
 	list -> next = 0;
 }
 
-void	quick_sort(t_stack **a, t_stack **b)
+void	sorting(t_stack **top)
 {
-	int	middle;
 	t_stack *list;
-
-	list = *a;
-	middle = find_middle(list);
-	while (list != 0)
-	{
-		if (list->data >= middle)
-			rotate(&list);
-		else
-			push(b,a);
-		list = list->next;
-	}
-}
-
-int	cul_avg(t_stack *top)
-{
+	t_stack *sorted_node;
 	int		min;
-	int		max;
-	t_stack *list;
 
-	min = 0;
-	max = 0;
-	list = top;
-	while(list != 0)
+	sorted_node = *top;
+	while (sorted_node != 0)
 	{
-		if (list->data < min)
-			min = list->data;
-		if (list->data > max)
-			max = list->data;
-		list = list->next;
+		min = 2147483647;
+		list = sorted_node;
+		
+		while (list != 0)
+		{
+			if (min > list->data)
+				min = list->data;
+			list = list->next;
+		}
+		list = sorted_node;
+		while (list != 0)
+		{
+			if (min == list->data)
+			{
+				list->data = (sorted_node)->data;
+				(sorted_node)->data = min;
+				break ;
+			}
+			list = list->next;
+		}
+		sorted_node = sorted_node->next;
 	}
-	return ((min + max) / 2);
-}
-
-int	find_middle(t_stack *top)
-{
-	int		avg;
-	int		def;
-	t_stack *list;
-
-	list = top;
-	avg = cul_avg(top);
-	def = 2147483647;
-	while(list != 0)
-	{
-		if (def > abs(avg - list->data))
-			def  = abs(avg - list->data);
-		list = list->next;
-	}
-	list = top;
-	while(list != 0)
-	{
-		if (def == abs(avg - list->data))
-			return (list->data);
-		list = list->next;
-	}
-	return (def);
-}
-
-int	abs(int val)
-{
-	if (val < 0)
-		return (-val);
-	return (val);
 }
 
 int main()
@@ -148,14 +112,14 @@ int main()
 	t_stack	*top;
 	t_stack	*top2;
 	top = 0;
-	append(&top, 4);
 	append(&top, 3);
 	append(&top, 2);
+	append(&top, -4);
 	append(&top, 1);
 	append(&top2, 6);
 	append(&top2, 5);
 	append(&top2, 4);
-	reverse_rotate(&top);
+	sorting(&top);
 	while (top != 0)
 	{
 		printf("%d\n", top->data);
