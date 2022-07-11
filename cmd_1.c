@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:29:35 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/11 02:16:59 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/11 16:10:13 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,34 +175,50 @@ int find_mid(t_stack	*top)
 	return (0);
 }
 
-void quick(t_stack **sorting_top, t_stack **box_top, int mid, int flag)
+void quick(t_stack **sorting_top, t_stack **box_top, int mid, int pushed)
 {
-	t_stack *logic_box;
+	int	cnt;
 
-	logic_box = 0;
-	while (!is_min(*sorting_top, mid))
+	cnt = 0;
+	if (pushed == 0)
 	{
-		if (flag == 0)
+		while (!is_min(*sorting_top, mid))
 		{
-			if ((*sorting_top)->data >= mid)
-				rotate(sorting_top);
-			else
-				push(&logic_box, sorting_top);
-		}
-		if (flag == 1)
-		{
-			if ((*sorting_top)->data <= mid)
-				rotate(sorting_top);
-			else
-				push(&logic_box, sorting_top);
+				if ((*sorting_top)->data >= mid)
+					rotate(sorting_top);
+				else
+				{
+					push(box_top, sorting_top);
+					pushed++;
+				}
 		}
 	}
-	if (!is_sort(*sorting_top))
-		quick(sorting_top, &logic_box, find_mid(*sorting_top), 0);
-	if (!is_revers_sort(logic_box))
-		quick(&logic_box, sorting_top, find_mid(logic_box), 1);
-	while (logic_box != 0)
-		push(sorting_top, &logic_box);
+	else//역방향
+	{
+		while (!is_min(*box_top, mid) && pushed != 0)
+		{
+				if ((*box_top)->data <= mid)
+				{
+					rotate(box_top);
+					cnt++;
+				}
+				else
+				{
+					push(sorting_top, box_top);
+					pushed--;
+				}
+		}
+		while (cnt != 0)
+		{
+			reverse_rotate(box_top);
+			cnt--;
+		}
+		return ;
+	}
+	if (!is_sort(*sorting_top) && pushed != 0)
+		quick(sorting_top, box_top, find_mid(*sorting_top), 0);
+	if (!is_sort(*box_top))
+		quick(sorting_top, box_top, find_mid(*box_top), pushed);
 }
 
 int	is_sort(t_stack *top)
@@ -279,11 +295,9 @@ int main()
 		top = top->next;
 	}
 	printf("----------------\n");
-	/*
 	while (top2 != 0)
 	{
 		printf("%d\n", top2->data);
 		top2 = top2->next;
 	}
-	*/
 }
