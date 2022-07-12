@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:29:35 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 03:39:45 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 07:55:58 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	swap(t_stack	**top)
+void	swap(t_stack	*top)
 {
 	int	temp;
 
-	temp = (*top)->data;
-	(*top)->data = (*top)->next->data;
-	(*top)->next->data = temp;
+	temp = top->data;
+	top->data = top->next->data;
+	top->next->data = temp;
 }
 
 void	push(t_stack	**dest, t_stack	**src)
@@ -51,17 +51,18 @@ void	append(t_stack **top, int new_data)
 void	rotate(t_stack **top)
 {
 	t_stack *list;
-	t_stack *new_top;
+	int		temp;
 
 	list = *top;
+	temp = (*top)->data;
 	if (list->next == 0)
 		return ;
-	new_top = (*top)->next;
 	while (list->next != 0)
+	{
+		list->data = list->next->data;
 		list = list->next;
-	list -> next = *top;
-	(*top)-> next = 0;
-	*top = new_top;
+	}
+	list->data = temp;
 }
 
 void	reverse_rotate(t_stack **top)
@@ -197,7 +198,7 @@ void a_to_b(t_stack **a_top, t_stack **b_top, int to_push)
 		if (!is_sort(*a_top, 2))
 		{
 			printf("sa\n");
-			swap(a_top);
+			swap(*a_top);
 			//print_all(*a_top, *b_top);
 		}
 		return ;
@@ -358,12 +359,89 @@ void overlap(int data, t_stack *top)
 	{
 		if (list->data == data)
 		{
-			write(0, "Error\n", 7);
+			write(1, "Error\n", 7);
 			exit(0);
 		}
 		list = list->next;
 	}
 }
+void sort_5(t_stack **a, t_stack **b)
+{
+	int		min;
+	int		i;
+
+	i = 0;
+	while (i < 2)
+	{
+		min = find_min(*a);
+		if ((*a)->data == min)
+		{
+			write(1, "pb\n", 3);
+			push(b, a);
+			i++;
+			continue;
+		}
+		write(1, "ra\n", 3);
+		rotate(a);
+	}
+	sort_3(a);
+	write(1, "pa\n", 3);
+	push(a, b);
+	write(1, "pa\n", 3);
+	push(a, b);
+}
+
+void sort_3(t_stack **a)
+{
+	int	val;
+	int	checker;
+	t_stack *list;
+
+	list = *a;
+	checker = 0;
+	val = list->data;
+	list = list->next;
+	while (list != 0)
+	{
+		if (val < list->data)
+			checker--;
+		else if (val > list-> data)
+			checker++;
+		list = list->next;
+	}
+	list = (*a)->next;
+	if (checker < 0)
+	{
+		write(1, "rra\n", 5);
+		reverse_rotate(a);
+		write(1, "sa\n", 4);
+		swap(*a);
+	}
+	else if (checker == 0)
+	{
+		if (val > list->data)
+		{
+			write(1, "sa\n", 3);
+			swap(*a);
+		}
+		else
+		{
+			write(1, "rra\n", 4);
+			reverse_rotate(a);
+		}
+	}
+	else
+	{
+		write(1, "ra\n", 3);
+		rotate(a);
+		if (!is_sort(*a, 2))
+		{
+			write(1, "sa\n", 3);
+			swap(*a);
+		}
+	}
+}
+
 int main(int argc,	char *argv[])
 {
 	t_stack	*a;
@@ -374,6 +452,7 @@ int main(int argc,	char *argv[])
 	if (argc < 2)
 		return (0);
 	a = 0;
+	b = 0;
 	i = argc - 1;
 	while (i > 0)
 	{
@@ -382,7 +461,13 @@ int main(int argc,	char *argv[])
 		append(&a, val);
 		i--;
 	}
-	b = 0;
-	a_to_b(&a,&b, argc - 1);
-	print_all(a, b);
+	if (is_sort(a,len_stack(a)))
+		return (0);
+	if (len_stack(a) == 3)
+		sort_3(&a);
+	else if (len_stack(a) == 5)
+		sort_5(&a, &b);
+	else
+		a_to_b(&a,&b, argc - 1);
+	//print_all(a, b);
 }

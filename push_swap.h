@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:39:54 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 03:20:07 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 07:42:45 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_stack{
 
 void	append(t_stack **top, int new_data);
 void	push(t_stack	**dest, t_stack	**src);
-void	swap(t_stack	**top);
+void	swap(t_stack	*top);
 void	rotate(t_stack **top);
 void	reverse_rotate(t_stack **top);
 void	sorting(t_stack *top);
@@ -37,6 +37,8 @@ void	b_to_a(t_stack **a_top, t_stack **b_top, int pushed);
 int		is_min(t_stack *top, int min);
 int		ft_atoi(const char	*str);
 void	overlap(int data, t_stack *top);
+void 	sort_3(t_stack **a);
+void 	sort_5(t_stack **a, t_stack **b);
 void	print_all(t_stack *a, t_stack *b);
 
 #endif
