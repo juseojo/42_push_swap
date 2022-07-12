@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:29:35 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/11 16:10:13 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 03:39:45 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	rotate(t_stack **top)
 	t_stack *new_top;
 
 	list = *top;
+	if (list->next == 0)
+		return ;
 	new_top = (*top)->next;
 	while (list->next != 0)
 		list = list->next;
@@ -67,6 +69,8 @@ void	reverse_rotate(t_stack **top)
 	t_stack *list;
 
 	list = *top;
+	if (list == 0 || list->next == 0)
+		return ;
 	while (list -> next -> next != 0)
 		list = list -> next;
 	append(top, list->next->data);
@@ -115,19 +119,20 @@ void	sorting(t_stack *top)
 	}
 }
 
-void copy(t_stack **dest, t_stack **src)
+void copy(t_stack **dest, t_stack **src, int n)
 {
 	t_stack *list;
 	t_stack *src_list;
 
 	list = *dest;
 	src_list = *src;
-	while (src_list->next != 0)
+	while (src_list->next != 0 && n > 1)
 	{
 		list->next = malloc(sizeof(struct s_stack));
 		list->data = src_list->data;
 		list = list->next;
 		src_list = src_list->next;
+		n--;
 	}
 	list->data = src_list->data;
 	list->next = 0;
@@ -148,7 +153,7 @@ int	len_stack(t_stack	*top)
 	return (len);
 }
 
-int find_mid(t_stack	*top)
+int find_mid(t_stack *top, int n)
 {
 	t_stack *sorted;
 	int		len;
@@ -157,7 +162,7 @@ int find_mid(t_stack	*top)
 	sorted = malloc(sizeof(struct s_stack));
 	if (!sorted)
 		exit(0);
-	copy(&sorted, &top);
+	copy(&sorted, &top, n);
 	sorting(sorted);
 	cnt = 0;
 	len = len_stack(sorted) / 2 + 1;
@@ -175,65 +180,121 @@ int find_mid(t_stack	*top)
 	return (0);
 }
 
-void quick(t_stack **sorting_top, t_stack **box_top, int mid, int pushed)
+void a_to_b(t_stack **a_top, t_stack **b_top, int to_push)
 {
+	int	rotate_cnt;
+	int	mid;
+	int	pushed;
 	int	cnt;
 
 	cnt = 0;
-	if (pushed == 0)
+	pushed = 0;
+	rotate_cnt = 0;
+	if (to_push == 1 || to_push == 0)
+		return ;
+	else if (to_push == 2)
 	{
-		while (!is_min(*sorting_top, mid))
+		if (!is_sort(*a_top, 2))
 		{
-				if ((*sorting_top)->data >= mid)
-					rotate(sorting_top);
-				else
-				{
-					push(box_top, sorting_top);
-					pushed++;
-				}
-		}
-	}
-	else//역방향
-	{
-		while (!is_min(*box_top, mid) && pushed != 0)
-		{
-				if ((*box_top)->data <= mid)
-				{
-					rotate(box_top);
-					cnt++;
-				}
-				else
-				{
-					push(sorting_top, box_top);
-					pushed--;
-				}
-		}
-		while (cnt != 0)
-		{
-			reverse_rotate(box_top);
-			cnt--;
+			printf("sa\n");
+			swap(a_top);
+			//print_all(*a_top, *b_top);
 		}
 		return ;
 	}
-	if (!is_sort(*sorting_top) && pushed != 0)
-		quick(sorting_top, box_top, find_mid(*sorting_top), 0);
-	if (!is_sort(*box_top))
-		quick(sorting_top, box_top, find_mid(*box_top), pushed);
+	mid = find_mid(*a_top, to_push);
+	while (to_push)
+	{
+		if ((*a_top)->data > mid)
+		{
+			printf("ra\n");
+			rotate(a_top);
+			//print_all(*a_top, *b_top);
+			rotate_cnt++;
+		}
+		else
+		{
+			printf("pb\n");
+			push(b_top, a_top);
+			//print_all(*a_top, *b_top);
+			pushed++;
+		}
+		to_push--;
+	}
+	while (rotate_cnt > cnt)
+	{
+		printf("rra\n");
+		reverse_rotate(a_top);
+		//print_all(*a_top, *b_top);
+		cnt++;
+	}
+	a_to_b(a_top, b_top, rotate_cnt);
+	b_to_a(a_top, b_top, pushed);
 }
 
-int	is_sort(t_stack *top)
+void b_to_a(t_stack **a_top, t_stack **b_top, int pushed)
+{
+	int	mid;
+	int	rotate_cnt;
+	int	cnt;
+	int	to_push;
+
+	to_push = 0;
+	cnt	= 0;
+	rotate_cnt = 0;
+	if (pushed == 0)
+		return ;
+	if (pushed == 1)
+	{
+		printf("pa\n");
+		push(a_top, b_top);
+		//print_all(*a_top, *b_top);
+		return ;
+	}
+	mid = find_mid(*b_top, pushed);
+	while (pushed)
+	{
+		if ((*b_top)->data < mid)
+		{
+			printf("rb\n");
+			rotate(b_top);
+			//print_all(*a_top, *b_top);
+			rotate_cnt++;
+		}
+		else
+		{
+			printf("pa\n");
+			push(a_top, b_top);
+			//print_all(*a_top, *b_top);
+			to_push++;
+		}
+		pushed--;
+	}
+	while (rotate_cnt > cnt)
+	{
+		printf("rrb\n");
+		reverse_rotate(b_top);
+		//print_all(*a_top, *b_top);
+		cnt++;
+	}
+	a_to_b(a_top, b_top, to_push);
+	b_to_a(a_top, b_top, rotate_cnt);
+}
+
+int	is_sort(t_stack *top, int len)
 {
 	t_stack *list;
 	int		val;
 
 	val = -2147483648;
 	list = top;
-	while (list != 0)
+	while (list != 0 && len > 0)
 	{
 		if (list->data > val)
 			val = list->data;
 		else
 			return (0);
+		len--;
 		list = list->next;
 	}
 	return (1);
@@ -271,33 +332,57 @@ int	is_min(t_stack *top, int min)
 	return (1);
 }
 
-int main()
+void print_all(t_stack *a, t_stack *b)
 {
-	t_stack	*top;
-	t_stack	*top2;
-	int		mid;
-
-	top = 0;
-	append(&top, 6);
-	append(&top, 7);
-	append(&top, 2);
-	append(&top, 5);
-	append(&top, 1);
-	append(&top, 8);
-	append(&top, 3);
-	append(&top, 4);
-	top2 = 0;
-	mid = find_mid(top);
-	quick(&top,&top2, mid, 0);
-	while (top != 0)
+	printf("a\n");
+	while (a != 0)
 	{
-		printf("%d\n", top->data);
-		top = top->next;
+		printf("| %d |\n", a->data);
+		a = a->next;
 	}
 	printf("----------------\n");
-	while (top2 != 0)
+	printf("b\n");
+	while (b != 0)
 	{
-		printf("%d\n", top2->data);
-		top2 = top2->next;
+		printf("| %d |\n", b->data);
+		b = b->next;
 	}
+	printf("----------------\n");
+}
+void overlap(int data, t_stack *top)
+{
+	t_stack	*list;
+
+	list = top;
+	while (list != 0)
+	{
+		if (list->data == data)
+		{
+			write(0, "Error\n", 7);
+			exit(0);
+		}
+		list = list->next;
+	}
+}
+int main(int argc,	char *argv[])
+{
+	t_stack	*a;
+	t_stack	*b;
+	int		val;
+	int		i;
+
+	if (argc < 2)
+		return (0);
+	a = 0;
+	i = argc - 1;
+	while (i > 0)
+	{
+		val = ft_atoi(argv[i]);
+		overlap(val, a);
+		append(&a, val);
+		i--;
+	}
+	b = 0;
+	a_to_b(&a,&b, argc - 1);
+	print_all(a, b);
 }
