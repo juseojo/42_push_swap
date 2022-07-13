@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 08:49:35 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 11:11:42 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 13:01:45 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int argc,	char *argv[])
 		return (0);
 	a = 0;
 	b = 0;
-	init_a(&a, &argv, argc -1);
+	init_a(&a, &argv, argc - 1);
 	if (is_sort(a, len_stack(a)))
 		return (0);
 	if (len_stack(a) == 3)
