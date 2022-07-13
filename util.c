@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 09:09:57 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 09:31:25 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 11:18:55 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ int	find_mid(t_stack *top, int n)
 		if (cnt == len)
 		{
 			cnt = sorted->data;
-			free(sorted);
+			free_son(&sorted);
 			return (cnt);
 		}
-		sorted = sorted->next;
+		free_and_next(&sorted);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 08:49:35 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 09:59:48 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 11:11:42 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ void	init_a(t_stack **a, char **argv[], int i)
 			overlap(val, *a);
 			append(a, val);
 		}
+		while (splited[++j] != 0)
+			free(splited[j]);
+		free(splited);
 		i--;
 	}
 }

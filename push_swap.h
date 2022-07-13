@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:39:54 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 10:08:33 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 11:29:16 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ typedef struct s_stack{
 	struct s_stack	*next;
 	int				data;
 }	t_stack;
+
+typedef struct s_val{
+	int	pushed;
+	int	to_push;
+	int	rotate_cnt;
+}	t_val;
 
 void	append(t_stack **top, int new_data);
 void	push(t_stack	**dest, t_stack	**src);
@@ -41,4 +47,6 @@ void	sort_5(t_stack **a, t_stack **b);
 char	**ft_split(char const *s, char c);
 int		len_stack(t_stack	*top);
 void	init_a(t_stack **a, char **argv[], int i);
+void	free_and_next(t_stack **target);
+void	free_son(t_stack **target);
 #endif
