@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 09:41:16 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 16:16:47 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 16:30:05 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static int	is_space(char ch)
 	{
 		return (1);
 	}
-	write(0, "Error\n", 7);
-	exit (0);
+	write(1, "Error\n", 7);
+	exit (1);
 }
 
 static int	cut(const char	*str, int *i, int *j)
@@ -102,14 +102,14 @@ int	ft_atoi(const char	*str)
 	result = cul_result(str, sign_minus, &i, &j);
 	if (sign_minus == -1)
 	{
-		write(0, "Error\n", 7);
+		write(1, "Error\n", 7);
 		exit(1);
 	}
 	if (sign_minus)
 		result = -result;
 	if (result < -2147483648 || 2147483647 < result)
 	{
-		write(0, "Error\n", 7);
+		write(1, "Error\n", 7);
 		exit(1);
 	}
 	return (result);
