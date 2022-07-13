@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 09:41:16 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 09:30:41 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 16:16:47 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,16 @@ static long long	cul_result(const char *str, int sign, int *i, int *j)
 	return (result);
 }
 
+int	is_num(char ch)
+{
+	if (!('0' <= ch && ch <= '9'))
+	{
+		write(1, "Error\n", 6);
+		exit(1);
+	}
+	return (1);
+}
+
 int	ft_atoi(const char	*str)
 {
 	int			i;
@@ -81,21 +91,26 @@ int	ft_atoi(const char	*str)
 	int			sign_minus;
 	long long	result;
 
+	if (*str == '\0')
+	{
+		write(1, "Error\n", 6);
+		exit(1);
+	}
 	sign_minus = cut(str, &i, &j);
-	while (str[i + j] && '0' <= str[i + j] && str[i + j] <= '9')
+	while (str[i + j] && is_num(str[i + j]))
 		j = j + 1;
 	result = cul_result(str, sign_minus, &i, &j);
 	if (sign_minus == -1)
 	{
 		write(0, "Error\n", 7);
-		exit(0);
+		exit(1);
 	}
 	if (sign_minus)
 		result = -result;
 	if (result < -2147483648 || 2147483647 < result)
 	{
 		write(0, "Error\n", 7);
-		exit(0);
+		exit(1);
 	}
 	return (result);
 }
