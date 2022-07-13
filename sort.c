@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seongjch <seongjch@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 09:08:47 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 10:26:17 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 13:28:00 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,29 +111,29 @@ void	sort_3_sub(t_stack **a, t_stack *list, int val, int checker)
 
 void	sort_3(t_stack **a)
 {
-	int		val;
 	int		checker;
 	t_stack	*list;
 
+	if (is_sort(*a, 3))
+		return ;
 	checker = 0;
-	val = (*a)->data;
 	list = (*a)->next;
 	while (list != 0)
 	{
-		if (val < list->data)
+		if ((*a)->data < list->data)
 			checker--;
-		else if (val > list-> data)
+		else if ((*a)->data > list-> data)
 			checker++;
 		list = list->next;
 	}
 	list = (*a)->next;
 	if (checker < 0)
 	{
-		write(1, "rra\n", 5);
+		write(1, "rra\n", 4);
 		reverse_rotate(a);
-		write(1, "sa\n", 4);
+		write(1, "sa\n", 3);
 		swap(*a);
 	}
 	else
-		sort_3_sub(a, list, val, checker);
+		sort_3_sub(a, list, (*a)->data, checker);
 }
