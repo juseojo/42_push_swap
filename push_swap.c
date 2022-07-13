@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 08:49:35 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 13:01:45 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 13:38:06 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	init_a(t_stack **a, char **argv[], int i)
 	while (i > 0)
 	{
 		splited = ft_split((*argv)[i], ' ');
+		if (splited == 0)
+			exit(0);
 		j = 0;
 		while (splited[j] != 0)
 			j++;

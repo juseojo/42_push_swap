@@ -6,7 +6,7 @@
 /*   By: seongjch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:30:43 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 08:19:27 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 13:36:24 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	**ft_split(char const *s, char c)
 	words = cnt_words(s, c);
 	result = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!result)
-		return (NULL);
+		exit (0);
 	spl(result, s, c, words);
 	return (result);
 }

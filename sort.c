@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 09:08:47 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 13:28:00 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 13:39:55 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	copy(t_stack **dest, t_stack **src, int n)
 	while (src_list->next != 0 && n > 1)
 	{
 		list->next = malloc(sizeof(struct s_stack));
+		if (list->next == 0)
+			exit(0);
 		list->data = src_list->data;
 		list = list->next;
 		src_list = src_list->next;
