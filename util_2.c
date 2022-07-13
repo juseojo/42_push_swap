@@ -6,13 +6,13 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 09:15:41 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 09:16:02 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 09:31:35 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void overlap(int data, t_stack *top)
+void	overlap(int data, t_stack *top)
 {
 	t_stack	*list;
 

@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 09:08:47 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 09:11:49 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 10:26:17 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	sorting(t_stack *top)
 {
-	t_stack *list;
-	t_stack *sorted_node;
+	t_stack	*list;
+	t_stack	*sorted_node;
 	int		min;
 
 	sorted_node = top;
@@ -37,10 +37,10 @@ void	sorting(t_stack *top)
 	}
 }
 
-void copy(t_stack **dest, t_stack **src, int n)
+void	copy(t_stack **dest, t_stack **src, int n)
 {
-	t_stack *list;
-	t_stack *src_list;
+	t_stack	*list;
+	t_stack	*src_list;
 
 	list = *dest;
 	src_list = *src;
@@ -56,7 +56,7 @@ void copy(t_stack **dest, t_stack **src, int n)
 	list->next = 0;
 }
 
-void sort_5(t_stack **a, t_stack **b)
+void	sort_5(t_stack **a, t_stack **b)
 {
 	int		min;
 	int		i;
@@ -70,7 +70,7 @@ void sort_5(t_stack **a, t_stack **b)
 			write(1, "pb\n", 3);
 			push(b, a);
 			i++;
-			continue;
+			continue ;
 		}
 		write(1, "ra\n", 3);
 		rotate(a);
@@ -82,33 +82,9 @@ void sort_5(t_stack **a, t_stack **b)
 	push(a, b);
 }
 
-void sort_3(t_stack **a)
+void	sort_3_sub(t_stack **a, t_stack *list, int val, int checker)
 {
-	int	val;
-	int	checker;
-	t_stack *list;
-
-	list = *a;
-	checker = 0;
-	val = list->data;
-	list = list->next;
-	while (list != 0)
-	{
-		if (val < list->data)
-			checker--;
-		else if (val > list-> data)
-			checker++;
-		list = list->next;
-	}
-	list = (*a)->next;
-	if (checker < 0)
-	{
-		write(1, "rra\n", 5);
-		reverse_rotate(a);
-		write(1, "sa\n", 4);
-		swap(*a);
-	}
-	else if (checker == 0)
+	if (checker == 0)
 	{
 		if (val > list->data)
 		{
@@ -131,4 +107,33 @@ void sort_3(t_stack **a)
 			swap(*a);
 		}
 	}
+}
+
+void	sort_3(t_stack **a)
+{
+	int		val;
+	int		checker;
+	t_stack	*list;
+
+	checker = 0;
+	val = (*a)->data;
+	list = (*a)->next;
+	while (list != 0)
+	{
+		if (val < list->data)
+			checker--;
+		else if (val > list-> data)
+			checker++;
+		list = list->next;
+	}
+	list = (*a)->next;
+	if (checker < 0)
+	{
+		write(1, "rra\n", 5);
+		reverse_rotate(a);
+		write(1, "sa\n", 4);
+		swap(*a);
+	}
+	else
+		sort_3_sub(a, list, val, checker);
 }

@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 09:41:16 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 03:41:43 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 09:30:41 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ static long long	cul_result(const char *str, int sign, int *i, int *j)
 
 int	ft_atoi(const char	*str)
 {
-	int		i;
-	int		j;
-	int		sign_minus;
+	int			i;
+	int			j;
+	int			sign_minus;
 	long long	result;
 
 	sign_minus = cut(str, &i, &j);
