@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:39:54 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 11:29:16 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 16:38:02 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ int		len_stack(t_stack	*top);
 void	init_a(t_stack **a, char **argv[], int i);
 void	free_and_next(t_stack **target);
 void	free_son(t_stack **target);
+void	atoi_error(void);
 #endif

@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 09:41:16 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 16:31:09 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 16:36:10 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,25 +92,16 @@ int	ft_atoi(const char	*str)
 	long long	result;
 
 	if (*str == '\0')
-	{
-		write(1, "Error\n", 6);
-		exit(1);
-	}
+		atoi_error();
 	sign_minus = cut(str, &i, &j);
 	while (str[i + j] && is_num(str[i + j]))
 		j = j + 1;
 	result = cul_result(str, sign_minus, &i, &j);
 	if (sign_minus == -1)
-	{
-		write(1, "Error\n", 6);
-		exit(1);
-	}
+		atoi_error();
 	if (sign_minus)
 		result = -result;
 	if (result < -2147483648 || 2147483647 < result)
-	{
-		write(1, "Error\n", 6);
-		exit(1);
-	}
+		atoi_error();
 	return (result);
 }

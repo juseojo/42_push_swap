@@ -6,7 +6,7 @@
 /*   By: seongjch <seongjch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 09:15:41 by seongjch          #+#    #+#             */
-/*   Updated: 2022/07/13 11:49:09 by seongjch         ###   ########.fr       */
+/*   Updated: 2022/07/13 16:37:42 by seongjch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	overlap(int data, t_stack *top)
 	{
 		if (list->data == data)
 		{
-			write(1, "Error\n", 7);
+			write(1, "Error\n", 6);
 			exit(0);
 		}
 		list = list->next;
@@ -41,4 +41,10 @@ void	free_son(t_stack **target)
 {
 	while ((*target) != 0)
 		free_and_next(target);
+}
+
+void	atoi_error(void)
+{
+	write(1, "Error\n", 6);
+	exit(1);
 }
